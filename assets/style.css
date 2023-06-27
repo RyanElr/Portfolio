@@ -1,0 +1,647 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+:root {
+  --clr: #222327;
+  --headerBackground: #1ed760;
+}
+.row {
+  margin: 0;
+}
+.navBar {
+  display: flex;
+  justify-content: center;
+}
+body {
+  min-height: 100vh;
+  background: black;
+}
+.myName {
+  animation: myName 3s;
+}
+.homeLogo {
+  width: 50px;
+  height: 50px;
+}
+@keyframes myName {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (max-width: 1000px) {
+  .indicator {
+    position: absolute;
+    top: -50%;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 6px solid var(--clr);
+    transition: 0.5s;
+  }
+  .title {
+    margin-top: 20px;
+  }
+  .container-fluid {
+    width: 100%;
+    margin: 10px auto;
+    margin-bottom: 100px;
+  }
+  .slider {
+    display: flex;
+    width: 500%;
+    height: 100%;
+  }
+
+  .navigation {
+    margin-top: 35px;
+    width: 100%;
+    height: 70px;
+    background: var(--clr);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    bottom: 0;
+    z-index: 10;
+  }
+  .navigation ul li a .icon {
+    position: relative;
+    display: block;
+    line-height: 75px;
+    font-size: 1.5em;
+    text-align: center;
+    transition: 0.5s;
+    color: #fff;
+  }
+}
+@media (min-width: 1000px) {
+  .indicator {
+    position: absolute;
+    top: -50%;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 6px solid black;
+    transition: 0.5s;
+  }
+  .slider {
+    display: flex;
+    width: 500%;
+  }
+  .slider section {
+    display: flex;
+  }
+  .container-fluid {
+    width: 80%;
+    margin: 10px auto;
+    margin-bottom: 200px;
+  }
+  .navigation {
+    margin-top: 35px;
+    width: 50%;
+    height: 70px;
+    background: #fff;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+  }
+  .indicator::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -22.5px;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-top-right-radius: 20px;
+    box-shadow: 1px -10px 0 0 black;
+  }
+  .indicator::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -22.5px;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-top-left-radius: 20px;
+    box-shadow: -1px -10px 0 0 black;
+  }
+  .navigation ul li a .icon {
+    position: relative;
+    display: block;
+    line-height: 75px;
+    font-size: 1.5em;
+    text-align: center;
+    transition: 0.5s;
+    color: var(--clr);
+  }
+}
+.navigation ul {
+  display: flex;
+  width: 412px;
+  padding: 0 2rem;
+}
+.navigation ul li {
+  position: relative;
+  list-style: none;
+  width: 70px;
+  height: 70px;
+  z-index: 1;
+}
+.navigation ul li a {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  font-weight: 500;
+}
+
+.navigation ul li.active .icon {
+  transform: translateY(-37px);
+}
+.navigation ul li a .text {
+  position: absolute;
+  color: var(--clr);
+  font-weight: 400;
+  font-size: 0.75em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.navigation ul li.active a .text {
+  opacity: 1;
+  transform: translateY(15px);
+}
+
+.navigation ul li:nth-child(1).active ~ .indicator {
+  transform: translateX(calc((70px * 0)));
+  background-color: var(--headerBackground);
+}
+.navigation ul li:nth-child(2).active ~ .indicator {
+  transform: translateX(calc((70px * 1)));
+  background-color: var(--headerBackground);
+}
+.navigation ul li:nth-child(3).active ~ .indicator {
+  transform: translateX(calc((70px * 2)));
+  background-color: var(--headerBackground);
+}
+.navigation ul li:nth-child(4).active ~ .indicator {
+  transform: translateX(calc((70px * 3)));
+  background-color: var(--headerBackground);
+}
+.navigation ul li:nth-child(5).active ~ .indicator {
+  transform: translateX(calc((70px * 4)));
+  background-color: var(--headerBackground);
+}
+.colorSpan {
+  color: #fff;
+  animation: mymove 3s;
+}
+@keyframes mymove {
+  from {
+    color: black;
+  }
+  to {
+    color: white;
+  }
+}
+
+.carousel {
+  position: relative;
+  overflow: hidden;
+  background-color: black;
+  border-radius: 10px;
+}
+.slider section {
+  flex-basis: 100%;
+  justify-content: center;
+}
+.pageTitle {
+  align-items: center;
+}
+.page-header {
+  background: linear-gradient(var(--headerBackground), #4be782);
+  width: 100%;
+  height: 183px;
+  text-shadow: 2px 1px 2px #222327;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.page-home {
+  background: linear-gradient(var(--headerBackground), #4be782);
+  width: 100%;
+  height: 250px;
+  align-self: flex-start;
+}
+@keyframes myPage {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes mytranslate {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+/* Animation du sous titre de nom et prénom*/
+@keyframes leftToRight {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+    color: grey;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+    color: black;
+  }
+}
+/* Animation de nom et prénom 
+*/
+@keyframes rightToLeft {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+.page-name-home h4 {
+  animation: leftToRight 3s;
+}
+.page-name-home h2 {
+  animation: rightToLeft 3s;
+}
+.bitmoji {
+  width: 200px;
+  height: 200px;
+  border-radius: 40%;
+}
+.profileImg {
+  width: 110px;
+  height: 110px;
+}
+.profileImgUndiz {
+  width: 150px;
+  height: 80px;
+}
+.profileImgLaManu {
+  width: 130px;
+  height: 50px;
+}
+.bitmoji:hover {
+  transform: scale(1.05);
+  transition: 0.2s;
+}
+.aboutMe {
+  color: var(--headerBackground);
+}
+.aboutMeProfile {
+  color: black;
+  font-size: 15px;
+  justify-content: center;
+  align-items: center;
+}
+section p {
+  text-align: center;
+  text-shadow: 0.5px 0.2px 2px #fff;
+  color: #fff;
+}
+section h2 {
+  text-align: center;
+  text-shadow: 0.5px 0.2px 2px #222327;
+}
+section h5 {
+  text-align: center;
+  text-shadow: 0.5px 2px 2px #fff;
+}
+section span {
+  text-align: center;
+}
+.bitmojiLoisir {
+  width: 200px;
+  height: 200px;
+  border-radius: 50px;
+  justify-content: center;
+  text-align: center;
+  align-self: center;
+}
+.formations {
+  -webkit-box-shadow: 0 7px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 7px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 95%;
+  justify-content: center;
+  align-items: center;
+  margin-left: 2%;
+}
+H2 {
+  font-family: "Montserrat", Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.page-loisir {
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+.page-project {
+  text-align: center;
+}
+.section-loisir {
+  justify-content: center;
+  text-align: center;
+}
+.section-profile {
+  justify-content: center;
+  text-align: center;
+}
+.section-project {
+  justify-content: center;
+  text-align: center;
+}
+body::-webkit-scrollbar {
+  width: 8px; /* width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background: transparent; /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #1ed760; /* color of the scroll thumb */
+}
+.page-formation {
+  scroll-behavior: auto;
+}
+.cardLoisir {
+  box-shadow: rgb(11, 15, 20) 0px 20px 30px -10px;
+  background-color: #fff;
+}
+.cardLoisir:hover {
+  background-color: var(--clr);
+  transition: 0.2s;
+}
+.cardLoisir p {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 0.2s;
+  color: #fff;
+}
+.cardContact {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.cardContact p {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 0.2s;
+  color: #fff;
+}
+.cardContact:hover {
+  transition: 0.2s;
+}
+.cardContact i {
+  scale: 4;
+}
+.cardContact:hover i {
+  scale: 1;
+  transition: 0.2s;
+}
+.cardProfile:hover p {
+  opacity: 1;
+  transform: translateY(15px);
+  transition: 0.4s;
+  text-decoration: none;
+}
+.cardProfile:hover {
+  background-color: black;
+  transition: 0.1s;
+}
+.cardContact:hover p {
+  opacity: 1;
+  transform: translateY(15px);
+  transition: 0.2s;
+  text-decoration: none;
+  color: #222327;
+}
+.cardContact a {
+  text-decoration: none;
+}
+.cardLoisir:hover p {
+  opacity: 1;
+  transform: translateY(15px);
+  transition: 0.2s;
+}
+.flip-card:hover p {
+  opacity: 1;
+  transform: translateY(15px);
+  transition: 0.5s;
+}
+.cardLoisir:hover span {
+  color: white;
+  font-weight: bold;
+}
+.cardProfile span {
+  display: flex;
+  font-weight: bold;
+}
+.cardLoisir:hover img {
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+
+.flip-card {
+  align-self: top;
+  background-color: transparent;
+  width: 100%;
+  height: 200px;
+  margin-top: 10px;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front,
+.flip-card-back {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  color: black;
+  background-color: #fff;
+}
+.flip-card-front p {
+  color: var(--headerBackground);
+}
+
+/* Style the back side */
+.flip-card-back {
+  color: white;
+  transform: rotateY(180deg);
+  display: none;
+}
+.flip-card:hover .flip-card-inner .flip-card-front {
+  display: none;
+}
+.flip-card:hover .flip-card-inner .flip-card-back {
+  display: block;
+}
+
+.projectDiv {
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+.projectDiv img {
+  width: 100%;
+  height: 100%;
+}
+.projectDiv:hover {
+  background-color: black;
+}
+.projectDiv:hover a p {
+  display: block;
+  color: #fff;
+  position: absolute;
+}
+.projectDiv p {
+  display: none;
+}
+.projectDiv:hover a img {
+  opacity: 0.1;
+  transition: 1s;
+}
+.phone-app {
+  height: 70%;
+}
+.fa {
+  color: #1ed760;
+  border-width: 1px red;
+}
+.page-title-home {
+  align-self: flex-end;
+}
+.page-title {
+  align-self: center;
+  justify-content: center;
+}
+.page-name-home {
+  align-self: center;
+}
+.page-title {
+  align-items: center;
+}
+.page-home-body {
+  text-align: center;
+  background-color: aquamarine;
+  height: 3000px;
+}
+.page-body {
+  text-align: center;
+  align-items: center;
+}
+.section-inner {
+  background-color: aquamarine;
+  height: 500px;
+}
+
+/* Button Dl*/
+.button-89 {
+  --b: 3px; /* border thickness */
+  --s: 0.45em; /* size of the corner */
+  --color: #fff;
+
+  padding: calc(0.5em + var(--s)) calc(0.9em + var(--s));
+  color: var(--color);
+  --_p: var(--s);
+  background: conic-gradient(
+      from 90deg at var(--b) var(--b),
+      #0000 90deg,
+      var(--color) 0
+    )
+    var(--_p) var(--_p) / calc(100% - var(--b) - 2 * var(--_p))
+    calc(100% - var(--b) - 2 * var(--_p));
+  transition: 0.3s linear, color 0s, background-color 0s;
+  outline: var(--b) solid #0000;
+  outline-offset: 0.6em;
+  font-size: 16px;
+
+  border: 0;
+
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-bottom: 10px;
+}
+
+.button-89:hover,
+.button-89:focus-visible {
+  --_p: 0px;
+  outline-color: var(--color);
+  outline-offset: 0.05em;
+  background-color: #1ed760;
+}
+
+.button-89:active {
+  background: var(--color);
+  color: #fff;
+}
+.button-89 a {
+  text-decoration: none;
+  color: #1ed760;
+}
+.button-89:hover a {
+  color: #fff;
+  text-shadow: 0.5px 0.2px 2px black;
+}
+.background-red {
+  background-color: red;
+}
+.background-bto {
+  background-color: grey;
+}
+.allo {
+  background-color: aqua;
+}
+.bgblue {
+  background-color: purple;
+}
