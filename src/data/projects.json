@@ -1,0 +1,11 @@
+[
+  {
+    "id": "proj-1",
+    "titre": "Planner",
+    "sousTitre": "Création complete d'une application de planning pour les streamers",
+    "description": "Création complete d'une application de planning pour les streamers",
+    "image": "https://lh3.googleusercontent.com/d/1esBv2jfHYNkpwPIXSe2v542C-8K3Nogp=w1600",
+    "tech": ["React", "Python", "SCSS","Django", "MySQL", "Docker","Electron","React Native", "Express","API"]
+  }
+]
+

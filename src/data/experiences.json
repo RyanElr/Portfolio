@@ -1,0 +1,51 @@
+[
+ 
+  {
+    "id": "exp-1",
+    "poste": "Développeur Web",
+    "entreprise": "Freelance",
+    "lieu": "France",
+    "debut": "2025-02",
+    "fin": "Aujourd'hui",
+    "missions": [
+      "Création d’applications web sur mesure",
+      "Mise en place de paiements et d’intégrations API"
+    ],
+    "tech": ["Next.js", "TailwindCSS", "mongoDB", "Cloudinary"]
+  },
+  {
+    "id": "exp-2",
+    "poste": "Développeur Fullstack",
+    "entreprise": "Maintners",
+    "logo":"https://drive.usercontent.google.com/download?id=1Ya6GUpi2Z35FAqKZ4pZsWoWkuVlubwn6&export=view&authuser=0",
+    "lieu": "France",
+    "debut": "2023-04",
+    "fin": "2025-02",
+    "missions": [
+      "Développement d’interfaces en React",
+      "Mise en place de composants réutilisables et accessibilité",
+      "Mise en place de la sécurité de l’application (CORS, Ratelimiter etc ...)",
+      "Configuration de la base MongoDB",
+      "Administration du site wordpress de la société",
+      "Amélioration de l’expérience utilisateur et de la sécurité grâce à la mise en place de notifications email automatisées (MFA, reset password, etc.).",
+      "Gestion documentaire via AWS S3 (upload, stockage, accès sécurisé)",
+      "Intégrations multi-API avec normalisation et orchestration des retours"
+    ],
+    "tech": ["React", "Node.js", "TypeScript","EJS", "AWS S3","Docker","MongoDB", "TailwindCSS", "GraphQL", "Postman"]
+  },
+  {
+    "id": "exp-3",
+    "poste": "Adjoint Manager",
+    "entreprise": "Super U",
+    "logo":"https://drive.google.com/file/d/1P9ANsZCaUK26ZY-PcVsC0ZfsSw1CcFh1/view?usp=sharing",
+    "lieu": "France",
+    "debut": "2021-07",
+    "fin": "2022-09",
+    "missions": [
+      "Développement d’interfaces en React",
+      "Mise en place de composants réutilisables et accessibilité"
+    ],
+    "tech": ["Management"]
+
+  }
+]
