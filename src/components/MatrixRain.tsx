@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 export default function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
-  const stopRef = useRef<() => void>();
+  const stopRef = useRef<(() => void) | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
