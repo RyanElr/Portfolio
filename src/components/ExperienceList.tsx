@@ -1,4 +1,8 @@
-import getLogoSrc from "@/app/utils/fonction";// components/ExperienceList.tsx
+ "use client";
+
+import GsapReveal from "@/components/GsapReveal";
+
+// components/ExperienceList.tsx
 type Experience = {
   id: string;
   poste: string;
@@ -13,40 +17,30 @@ type Experience = {
 export default function ExperienceList({ experiences }: { experiences: Experience[] }) {
   return (
     <ul className="space-y-6">
-      {experiences.map((exp) => (
+      {experiences.map((exp, index) => (
         <li key={exp.id}>
-          <div className="flex items-start gap-3">
-            {exp.logo ? (
-              <img
-                src={getLogoSrc(exp.logo)}
-                alt={exp.entreprise}
-                className="h-12 w-12 shrink-0 rounded bg-black/60 object-contain p-1 border border-white/15 shadow"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : null}
-
-            {/* Card plus sombre */}
+          <GsapReveal delay={index * 0.07} y={40}>
             <div
               className="group relative flex-1 overflow-hidden rounded-xl border border-white/5
                          bg-white/[0.02] supports-[backdrop-filter]:bg-white/[0.03] supports-[backdrop-filter]:backdrop-blur-sm
                          shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_10px_28px_rgba(0,0,0,0.45)]
                          transition-transform duration-200 ease-out hover:-translate-y-[2px]"
             >
-              {/* voile vertical assombri */}
               <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-b from-white/[0.03] to-transparent" />
 
-              <div className="relative p-5">
+              <div className="relative p-5 space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h3 className="text-base sm:text-lg font-semibold tracking-tight">
-                    {exp.poste} · <span className="text-foreground/70">{exp.entreprise}</span>
-                  </h3>
-                  <span className="text-xs sm:text-sm text-foreground/60 whitespace-nowrap">
-                    {formatDate(exp.debut)} – {formatDate(exp.fin)}
-                  </span>
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-amber-300/80">
+                      {formatDate(exp.debut)} – {formatDate(exp.fin)} · {exp.entreprise}
+                    </p>
+                    <h3 className="mt-1 text-base sm:text-lg font-semibold tracking-tight">
+                      {exp.poste}
+                    </h3>
+                  </div>
                 </div>
 
-                <ul className="mt-3 list-disc pl-5 space-y-1 text-sm text-foreground/90">
+                <ul className="mt-1 list-disc pl-5 space-y-1 text-sm text-foreground/90">
                   {exp.missions.map((m, i) => <li key={i}>{m}</li>)}
                 </ul>
 
@@ -64,7 +58,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
                 </div>
               </div>
             </div>
-          </div>
+          </GsapReveal>
         </li>
       ))}
     </ul>

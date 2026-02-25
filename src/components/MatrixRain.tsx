@@ -33,7 +33,7 @@ export default function MatrixRain() {
     const targetFps = 30;
     const frameInterval = 1000 / targetFps;
 
-    // >>> teinte selon la page
+    // >>> teinte globale jaune moutarde
     const tint = getTint(pathname);
 
     const draw = (time: number) => {
@@ -96,14 +96,6 @@ export default function MatrixRain() {
 }
 
 function getTint(pathname: string) {
-  switch (pathname) {
-    case "/experiences":
-      return "rgba(59, 130, 246, 0.9)";
-      case "/projects":
-        return "rgba(168, 85, 247, 0.9)";
-        case "/contact":
-          return "rgba(0, 255, 65, 0.9)";
-    default:
-      return "rgba(229, 9, 20, 0.9)";
-  }
+  // jaune moutarde #eab308
+  return "rgba(234, 179, 8, 0.9)";
 }
