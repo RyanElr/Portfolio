@@ -11,10 +11,13 @@
       "Mise en place de paiements et d'intégrations API"
     ],
     "tech": [
+      "React",
       "Next.js",
       "TailwindCSS",
       "mongoDB",
-      "Cloudinary"
+      "Cloudinary",
+      "API",
+      "PHP"
     ]
   },
   {

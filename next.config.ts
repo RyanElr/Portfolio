@@ -8,7 +8,7 @@ const nextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "img-src 'self' data: https://lh3.googleusercontent.com https://*.googleusercontent.com;",
+            value: "img-src 'self' data: https://lh3.googleusercontent.com https://*.googleusercontent.com https://res.cloudinary.com;",
           },
         ],
       },

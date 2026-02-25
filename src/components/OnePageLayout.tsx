@@ -155,7 +155,7 @@ function Slide({
         absolute inset-0 w-full h-full
         overflow-y-auto overflow-x-hidden
         flex flex-col opacity-0 invisible
-        ${noPaddingTop ? "" : "pt-24 sm:pt-28"} /* Padding to account for the fixed header */
+        ${noPaddingTop ? "" : "pt-14 sm:pt-16"} /* Padding to account for the fixed header */
         px-4 sm:px-8
       `}
     >

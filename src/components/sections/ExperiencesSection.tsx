@@ -4,7 +4,7 @@ import GsapReveal from "@/components/GsapReveal";
 
 export default function ExperiencesSection() {
   return (
-    <section className="min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-96px)] flex flex-col pt-16 lg:pt-20">
+    <section className="min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-96px)] flex flex-col pt-6 lg:pt-8">
       <GsapReveal>
         <header className="mb-6">
           <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
