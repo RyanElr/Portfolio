@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import MatrixRain from "@/components/MatrixRain";
 import ProjectsGrid from "@/components/ProjectsGrid";
 import projects from "@/data/projects.json";

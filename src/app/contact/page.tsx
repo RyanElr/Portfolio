@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import MatrixRain from "@/components/MatrixRain";
 
 export default function ContactPage() {

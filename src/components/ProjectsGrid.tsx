@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -20,7 +20,7 @@ export default function ProjectsGrid({
   onRevealProject,
 }: {
   projects: Project[];
-  onRevealProject?: (project: Project) => void;
+  onRevealProject?: (project: Project, originRect: DOMRect) => void;
 }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -40,17 +40,16 @@ function ProjectTile({
   onReveal,
 }: {
   project: Project;
-  onReveal?: (project: Project) => void;
+  onReveal?: (project: Project, originRect: DOMRect) => void;
 }) {
   const [percent, setPercent] = useState(0);
+  const articleRef = useRef<HTMLElement | null>(null);
   const barRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLDivElement | null>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
 
   useEffect(() => {
-    return () => {
-      tweenRef.current?.kill();
-    };
+    return () => { tweenRef.current?.kill(); };
   }, []);
 
   const startLoading = () => {
@@ -63,7 +62,7 @@ function ProjectTile({
 
     tweenRef.current = gsap.to(progress, {
       value: 100,
-      duration: 3,
+      duration: 2,
       ease: "none",
       onUpdate: () => {
         setPercent(Math.round(progress.value));
@@ -73,7 +72,9 @@ function ProjectTile({
       },
       onComplete: () => {
         setPercent(100);
-        onReveal?.(project);
+        if (articleRef.current && onReveal) {
+          onReveal(project, articleRef.current.getBoundingClientRect());
+        }
       },
     });
 
@@ -81,7 +82,7 @@ function ProjectTile({
       gsap.fromTo(
         titleRef.current,
         { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }
+        { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }
       );
     }
   };
@@ -101,6 +102,7 @@ function ProjectTile({
 
   return (
     <article
+      ref={articleRef}
       className="group relative overflow-hidden rounded-xl border border-white/15 bg-black/60 backdrop-blur-md transition-transform duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.65)] cursor-pointer"
       onMouseEnter={startLoading}
       onMouseLeave={stopLoading}
@@ -142,4 +144,3 @@ function ProjectTile({
     </article>
   );
 }
-

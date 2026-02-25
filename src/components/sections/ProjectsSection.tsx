@@ -1,42 +1,31 @@
- "use client";
+"use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 import ProjectsGrid, { Project } from "@/components/ProjectsGrid";
 import projects from "@/data/projects.json";
 import GsapReveal from "@/components/GsapReveal";
 
+/* ── Types ─────────────────────────────────────────────────────────────── */
+interface RevealPayload {
+  project: Project;
+  originRect: DOMRect; // bounding box of the card that was clicked
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ProjectsSection
+══════════════════════════════════════════════════════════════════════════ */
 export default function ProjectsSection() {
-  const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const overlayRef = useRef<HTMLDivElement | null>(null);
-  const panelRef = useRef<HTMLDivElement | null>(null);
+  const [payload, setPayload] = useState<RevealPayload | null>(null);
 
-  useEffect(() => {
-    if (!overlayRef.current || !panelRef.current || !activeProject) return;
+  const handleReveal = useCallback((project: Project, originRect: DOMRect) => {
+    setPayload({ project, originRect });
+  }, []);
 
-    const tl = gsap.timeline();
-    tl.fromTo(
-      overlayRef.current,
-      { autoAlpha: 0 },
-      { autoAlpha: 1, duration: 0.35, ease: "power2.out" }
-    ).fromTo(
-      panelRef.current,
-      { y: 40, scale: 0.85, autoAlpha: 0 },
-      {
-        y: 0,
-        scale: 1,
-        autoAlpha: 1,
-        duration: 0.6,
-        ease: "power4.out",
-      },
-      "<"
-    );
-
-    return () => {
-      tl.kill();
-    };
-  }, [activeProject]);
+  const handleClose = useCallback(() => {
+    setPayload(null);
+  }, []);
 
   return (
     <section className="min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-96px)] flex flex-col pt-16 lg:pt-20">
@@ -47,7 +36,7 @@ export default function ProjectsSection() {
           </h2>
           <p className="mt-2 text-sm text-foreground/75 max-w-xl">
             Une sélection de projets perso et pro autour du web moderne,
-            des APIs et d’interfaces animées.
+            des APIs et d&apos;interfaces animées.
           </p>
         </header>
       </GsapReveal>
@@ -55,90 +44,227 @@ export default function ProjectsSection() {
       <div className="mt-6 flex-1">
         <ProjectsGrid
           projects={projects}
-          onRevealProject={setActiveProject}
+          onRevealProject={handleReveal}
         />
       </div>
 
-      {activeProject && (
+      {payload && (
         <ProjectDetailModal
-          project={activeProject}
-          onClose={() => setActiveProject(null)}
-          overlayRef={overlayRef}
-          panelRef={panelRef}
+          project={payload.project}
+          originRect={payload.originRect}
+          onClose={handleClose}
         />
       )}
     </section>
   );
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   ProjectDetailModal  –  cinematic expand + Matrix glitch
+══════════════════════════════════════════════════════════════════════════ */
 function ProjectDetailModal({
   project,
+  originRect,
   onClose,
-  overlayRef,
-  panelRef,
 }: {
   project: Project;
+  originRect: DOMRect;
   onClose: () => void;
-  overlayRef: React.RefObject<HTMLDivElement>;
-  panelRef: React.RefObject<HTMLDivElement>;
 }) {
+  const backdropRef = useRef<HTMLDivElement | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const glitchRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const closingRef = useRef(false);
+
+  /* ── OPEN animation ───────────────────────────────────────────────── */
+  useEffect(() => {
+    const backdrop = backdropRef.current;
+    const panel = panelRef.current;
+    const glitch = glitchRef.current;
+    const content = contentRef.current;
+    if (!backdrop || !panel || !glitch || !content) return;
+
+    const vpW = window.innerWidth;
+    const vpH = window.innerHeight;
+
+    // Starting clip-path centred on the source card
+    const cx = originRect.left + originRect.width / 2;
+    const cy = originRect.top + originRect.height / 2;
+    const rx = originRect.width / 2;
+    const ry = originRect.height / 2;
+
+    const startClip = `inset(${cy - ry}px ${vpW - cx - rx}px ${vpH - cy - ry}px ${cx - rx}px round 16px)`;
+    const endClip = `inset(0px 0px 0px 0px round 0px)`;
+
+    // Hide pieces before animating
+    gsap.set(content.children, { autoAlpha: 0, y: 24 });
+    gsap.set(glitch, { autoAlpha: 0 });
+
+    const tl = gsap.timeline();
+
+    // 1. Backdrop fade-in
+    tl.fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 });
+
+    // 2. Panel expands from card position via clip-path
+    tl.fromTo(
+      panel,
+      { clipPath: startClip, autoAlpha: 1 },
+      {
+        clipPath: endClip,
+        duration: 0.65,
+        ease: "expo.inOut",
+      },
+      "<0.05"
+    );
+
+    // 3. Matrix glitch flash at the peak
+    tl.to(glitch, { autoAlpha: 0.6, duration: 0.06 }, "-=0.12")
+      .to(glitch, { autoAlpha: 0, duration: 0.18, ease: "power2.out" });
+
+    // 4. Content lines cascade in
+    tl.to(
+      content.children,
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.35,
+        stagger: 0.07,
+        ease: "power3.out",
+      },
+      "-=0.1"
+    );
+
+    return () => { tl.kill(); };
+  }, [originRect]);
+
+  /* ── CLOSE animation ─────────────────────────────────────────────── */
+  const handleClose = () => {
+    if (closingRef.current) return;
+    closingRef.current = true;
+
+    const panel = panelRef.current;
+    const backdrop = backdropRef.current;
+    const glitch = glitchRef.current;
+    if (!panel || !backdrop || !glitch) { onClose(); return; }
+
+    const vpW = window.innerWidth;
+    const vpH = window.innerHeight;
+    const cx = originRect.left + originRect.width / 2;
+    const cy = originRect.top + originRect.height / 2;
+    const rx = originRect.width / 2;
+    const ry = originRect.height / 2;
+    const endClip = `inset(${cy - ry}px ${vpW - cx - rx}px ${vpH - cy - ry}px ${cx - rx}px round 16px)`;
+
+    const tl = gsap.timeline({ onComplete: onClose });
+
+    tl.to(glitch, { autoAlpha: 0.5, duration: 0.05 })
+      .to(glitch, { autoAlpha: 0, duration: 0.1 })
+      .to(panel, {
+        clipPath: endClip,
+        duration: 0.5,
+        ease: "expo.inOut",
+      })
+      .to(backdrop, { autoAlpha: 0, duration: 0.2 }, "-=0.15");
+  };
+
+  /* ── Keyboard: Escape ─────────────────────────────────────────────── */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") handleClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="fixed inset-0 z-50">
+      {/* Dim backdrop */}
       <div
-        ref={overlayRef}
-        className="absolute inset-0 bg-black/75 backdrop-blur-sm"
-        onClick={onClose}
+        ref={backdropRef}
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        onClick={handleClose}
       />
 
-      <div className="absolute inset-0 flex items-center justify-center px-4">
-        <div
-          ref={panelRef}
-          className="relative max-w-3xl w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-slate-900/90 to-black/95 shadow-[0_40px_140px_rgba(0,0,0,0.9)]"
-        >
-          <div className="relative aspect-video bg-black/40">
-            {project.image && (
-              <img
-                src={project.image}
-                alt={project.titre}
-                className="h-full w-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
-            )}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-          </div>
+      {/* Matrix glitch scanlines overlay */}
+      <div
+        ref={glitchRef}
+        className="pointer-events-none absolute inset-0 z-10"
+        style={{
+          background:
+            "repeating-linear-gradient(0deg, rgba(234,179,8,0.08) 0px, rgba(234,179,8,0.08) 1px, transparent 1px, transparent 3px)",
+          mixBlendMode: "screen",
+        }}
+      />
 
-          <div className="relative p-5 sm:p-6 space-y-3">
-            <h3 className="text-xl font-semibold tracking-tight">
-              {project.titre}
-            </h3>
-            {project.sousTitre && (
-              <p className="text-sm text-foreground/80">
-                {project.sousTitre}
-              </p>
-            )}
+      {/* Expanding panel */}
+      <div
+        ref={panelRef}
+        className="absolute inset-0 z-20 flex items-center justify-center"
+        style={{ willChange: "clip-path" }}
+      >
+        {/* Dark full-screen bg so the clip-path reveals look solid */}
+        <div className="absolute inset-0 bg-[#080808]" />
 
-            {project.tech && project.tech.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                {project.tech.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full bg-amber-500/10 border border-amber-400/40 text-amber-100 px-3 py-1"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            )}
+        {/* Centered card content */}
+        <div className="relative z-10 w-full max-w-3xl mx-auto px-4">
+          <div
+            className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-slate-900/95 to-black shadow-[0_40px_140px_rgba(0,0,0,0.9)]"
+            onMouseLeave={handleClose}
+          >
 
-            <div className="mt-4 flex justify-end">
+            {/* Hero image */}
+            <div className="relative aspect-video bg-black/40">
+              {project.image && (
+                <img
+                  src={project.image}
+                  alt={project.titre}
+                  className="h-full w-full object-cover"
+                  loading="eager"
+                  decoding="async"
+                />
+              )}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+
+              {/* Close button top-right */}
               <button
                 type="button"
-                onClick={onClose}
-                className="inline-flex items-center rounded-full border border-white/20 px-4 py-1.5 text-xs font-medium text-foreground/80 hover:border-amber-400/80 hover:text-amber-200 transition-colors duration-150"
+                onClick={handleClose}
+                className="absolute top-4 right-4 z-20 flex items-center justify-center w-9 h-9 rounded-full bg-black/60 border border-white/20 text-white hover:border-amber-400/80 hover:text-amber-300 transition-colors duration-150"
+                aria-label="Fermer"
               >
-                Fermer
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                  className="w-4 h-4">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
               </button>
+            </div>
+
+            {/* Content cascade */}
+            <div ref={contentRef} className="p-5 sm:p-8 space-y-4">
+              <div>
+                <h3 className="text-2xl font-bold tracking-tight text-white">{project.titre}</h3>
+                {project.sousTitre && (
+                  <p className="mt-1 text-sm text-foreground/70">{project.sousTitre}</p>
+                )}
+              </div>
+
+              {project.description && (
+                <p className="text-sm text-foreground/80 leading-relaxed">{project.description}</p>
+              )}
+
+              {project.tech && project.tech.length > 0 && (
+                <div className="flex flex-wrap gap-2 text-xs">
+                  {project.tech.map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-full bg-amber-500/10 border border-amber-400/40 text-amber-100 px-3 py-1"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -146,4 +272,3 @@ function ProjectDetailModal({
     </div>
   );
 }
-
