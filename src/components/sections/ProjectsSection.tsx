@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import gsap from "gsap";
 
 import ProjectsGrid, { Project } from "@/components/ProjectsGrid";
@@ -267,12 +268,13 @@ function ProjectDetailModal({
               <div ref={carouselRef} className="absolute inset-0">
                 {images.map((src, i) => (
                   <div key={i} className="absolute inset-0">
-                    <img
+                    <Image
                       src={src}
                       alt={`${project.titre} - screenshot ${i + 1}`}
-                      className="absolute inset-0 h-full w-full object-contain"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      decoding="async"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 1024px"
+                      className="object-contain"
+                      priority={i === 0}
                     />
                   </div>
                 ))}

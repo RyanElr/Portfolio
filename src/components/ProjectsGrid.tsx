@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 
 import getLogoSrc from "@/app/utils/fonction";
@@ -102,12 +103,12 @@ function ProjectTile({
       {/* Image only */}
       <div className="relative overflow-hidden" style={{ aspectRatio: "16/10" }}>
         {project.image ? (
-          <img
+          <Image
             src={getLogoSrc(project.image, "=w1600")}
             alt={project.titre}
-            className="absolute inset-0 h-full w-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
-            loading="lazy"
-            decoding="async"
+            fill
+            sizes="(max-width: 640px) 100vw, 50vw"
+            className="object-contain transition-transform duration-500 ease-out group-hover:scale-105"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-white/5 text-foreground/30 text-sm">
