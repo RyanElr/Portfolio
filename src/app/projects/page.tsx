@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import MatrixRain from "@/components/MatrixRain";
 import ProjectsGrid from "@/components/ProjectsGrid";
-import projects from "@/data/projects.json";
+import projects from "@/data/projects";
 
 export default function ProjectsPage() {
   return (

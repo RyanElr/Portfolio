@@ -26,10 +26,14 @@
     "titre": "King IPTV",
     "sousTitre": "Client IPTV desktop avec interface moderne",
     "description": "Application desktop permettant de connecter et de gérer un accès IPTV. Affichage des chaînes, films et séries avec une interface sombre et épurée.",
-    "image": "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600/v1772025742/Capture_d_e%CC%81cran_2026-02-06_a%CC%80_14.52.28_wb4zyc.png",
+    "image": "v1772025742/Capture_d_e%CC%81cran_2026-02-06_a%CC%80_14.52.28_wb4zyc.png",
     "images": [
-      "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600/v1772025742/Capture_d_e%CC%81cran_2026-02-06_a%CC%80_14.52.28_wb4zyc.png",
-      "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600,e_blur:800/v1772025741/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_14.14.08_ynlhsc.png"
+      "v1772025742/Capture_d_e%CC%81cran_2026-02-06_a%CC%80_14.52.28_wb4zyc.png",
+      "v1772025741/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_14.14.08_ynlhsc.png"
+    ],
+    "imageOptions": [
+      "f_auto,q_auto,w_1600",
+      "f_auto,q_auto,w_1600,e_blur:800"
     ],
     "tech": [
       "Electron",
@@ -43,10 +47,10 @@
     "titre": "PDF Writter",
     "sousTitre": "Éditeur PDF avec drag & drop",
     "description": "Application web permettant de créer et composer des documents PDF via un éditeur drag & drop intuitif. Génération de PDF côté client en quelques clics.",
-    "image": "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600/v1772025741/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_14.16.16_gtzwqx.png",
+    "image": "v1772025741/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_14.16.16_gtzwqx.png",
     "images": [
-      "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600/v1772025741/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_14.16.16_gtzwqx.png",
-      "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600/v1772025741/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_14.17.11_oii1nx.png"
+      "v1772025741/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_14.16.16_gtzwqx.png",
+      "v1772025741/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_14.17.11_oii1nx.png"
     ],
     "tech": [
       "React",
@@ -59,10 +63,10 @@
     "titre": "EasyBill",
     "sousTitre": "Application de facturation simplifiée",
     "description": "Application de gestion de factures permettant de créer, suivre et gérer ses factures facilement avec une interface claire et intuitive.",
-    "image": "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600/v1772055877/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_22.43.22_qi3cvl.png",
+    "image": "v1772055877/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_22.43.22_qi3cvl.png",
     "images": [
-      "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600/v1772055877/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_22.43.22_qi3cvl.png",
-      "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600/v1772055877/Capture_d_écran_2026-02-26_à_01.30.17_twb766.png"
+      "v1772055877/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_22.43.22_qi3cvl.png",
+      "v1772055877/Capture_d_écran_2026-02-26_à_01.30.17_twb766.png"
     ],
     "tech": [
       "PHP",

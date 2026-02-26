@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import gsap from "gsap";
 
 import ProjectsGrid, { Project } from "@/components/ProjectsGrid";
-import projects from "@/data/projects.json";
+import projects from "@/data/projects";
 import GsapReveal from "@/components/GsapReveal";
 
 /* ── Types ─────────────────────────────────────────────────────────────── */
@@ -29,7 +29,7 @@ export default function ProjectsSection() {
   }, []);
 
   return (
-    <section className="min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-96px)] flex flex-col pt-16 lg:pt-20">
+    <section className="flex flex-col flex-1 pt-4">
       <GsapReveal>
         <header className="mb-6">
           <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
@@ -313,8 +313,8 @@ function ProjectDetailModal({
                         type="button"
                         onClick={(e) => { e.stopPropagation(); goToSlide(i); }}
                         className={`w-2 h-2 rounded-full transition-all duration-200 ${i === currentIdx
-                            ? "bg-amber-400 scale-125"
-                            : "bg-white/40 hover:bg-white/70"
+                          ? "bg-amber-400 scale-125"
+                          : "bg-white/40 hover:bg-white/70"
                           }`}
                         aria-label={`Image ${i + 1}`}
                       />
