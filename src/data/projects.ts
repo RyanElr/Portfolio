@@ -1,6 +1,6 @@
 import rawProjects from "./projects.json";
 
-const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
+const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME ?? "";
 
 export function cloudinaryUrl(
     filePath: string,
