@@ -8,7 +8,7 @@ export default function HeroSection() {
 
       <GsapReveal y={60}>
         <p className="text-sm font-medium tracking-[0.22em] uppercase text-orange-400/80">
-          Portfolio • Next.js • Three.js
+          Portfolio • Next.js • Three.js • GSAP
         </p>
         <h1 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight">
           Ryan, développeur{" "}
@@ -17,7 +17,6 @@ export default function HeroSection() {
         </h1>
         <p className="mt-6 text-base sm:text-lg text-foreground/80 max-w-xl">
           Je conçois et développe des expériences web rapides, propres et animées.
-          Next.js, TypeScript, Three.js & GSAP sont mes outils du quotidien.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <span className="inline-flex items-center justify-center rounded-full bg-orange-500 px-5 py-2.5 text-sm font-semibold text-black shadow-[0_0_30px_rgba(249,115,22,0.45)]">
