@@ -341,9 +341,8 @@ export default function ContactSection() {
         <div className="flex items-center justify-between text-xs text-foreground/35">
           <span>© {new Date().getFullYear()} Ryan El R. — Tous droits réservés.</span>
           <div className="flex items-center gap-4">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-300 transition-colors">GitHub</a>
+            <a href="https://github.com/RyanElr" target="_blank" rel="noopener noreferrer" className="hover:text-amber-300 transition-colors">GitHub</a>
             <a href="https://www.linkedin.com/in/ryanelr/" target="_blank" rel="noopener noreferrer" className="hover:text-amber-300 transition-colors">LinkedIn</a>
-            <a href="mailto:ryan.elr@outlook.com" className="hover:text-amber-300 transition-colors">Email</a>
           </div>
         </div>
       </footer>

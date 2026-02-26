@@ -53,5 +53,20 @@
       "TypeScript",
       "Tailwind"
     ]
+  },
+  {
+    "id": "proj-4",
+    "titre": "EasyBill",
+    "sousTitre": "Application de facturation simplifiée",
+    "description": "Application de gestion de factures permettant de créer, suivre et gérer ses factures facilement avec une interface claire et intuitive.",
+    "image": "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600/v1772055877/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_22.43.22_qi3cvl.png",
+    "images": [
+      "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600/v1772055877/Capture_d_e%CC%81cran_2026-02-25_a%CC%80_22.43.22_qi3cvl.png",
+      "https://res.cloudinary.com/dp52uzmzp/image/upload/f_auto,q_auto,w_1600/v1772055877/Capture_d_écran_2026-02-26_à_01.30.17_twb766.png"
+    ],
+    "tech": [
+      "PHP",
+      "SQL"
+    ]
   }
 ]

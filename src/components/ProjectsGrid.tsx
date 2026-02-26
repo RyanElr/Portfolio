@@ -24,7 +24,7 @@ export default function ProjectsGrid({
   onRevealProject?: (project: Project, originRect: DOMRect) => void;
 }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 auto-rows-fr">
       {projects.map((p) => (
         <ProjectTile
           key={p.id}
@@ -95,11 +95,11 @@ function ProjectTile({
   return (
     <article
       ref={articleRef}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-black/50 backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-1 hover:border-amber-400/30 hover:shadow-[0_20px_60px_rgba(0,0,0,0.6)] cursor-pointer"
+      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-black/50 backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-1 hover:border-amber-400/30 hover:shadow-[0_20px_60px_rgba(0,0,0,0.6)] cursor-pointer"
       onMouseEnter={startLoading}
       onMouseLeave={stopLoading}
     >
-      {/* Image — fixed ratio */}
+      {/* Image only */}
       <div className="relative overflow-hidden" style={{ aspectRatio: "16/10" }}>
         {project.image ? (
           <img
@@ -130,37 +130,6 @@ function ProjectTile({
             {percent}%
           </div>
         </div>
-      </div>
-
-      {/* Card body — always visible */}
-      <div className="flex flex-col flex-1 px-4 py-3">
-        <h3 className="text-sm font-semibold tracking-tight text-white/90">
-          {project.titre}
-        </h3>
-        {project.sousTitre && (
-          <p className="mt-0.5 text-xs text-foreground/50 line-clamp-1">
-            {project.sousTitre}
-          </p>
-        )}
-
-        {/* Tech tags */}
-        {project.tech && project.tech.length > 0 && (
-          <div className="mt-auto pt-2 flex flex-wrap gap-1">
-            {project.tech.slice(0, 4).map((t) => (
-              <span
-                key={t}
-                className="rounded-full bg-white/5 border border-white/8 text-[10px] text-foreground/50 px-2 py-0.5"
-              >
-                {t}
-              </span>
-            ))}
-            {project.tech.length > 4 && (
-              <span className="text-[10px] text-foreground/35 self-center">
-                +{project.tech.length - 4}
-              </span>
-            )}
-          </div>
-        )}
       </div>
     </article>
   );
