@@ -13,40 +13,42 @@ import GsapReveal from "@/components/GsapReveal";
 const contactSchema = z.object({
   user_name: z
     .string()
+    .trim()
     .min(2, "Le nom doit contenir au moins 2 caractères.")
     .max(60, "Le nom est trop long (60 max).")
-    .regex(/^[a-zA-ZÀ-ÿ\s\-'.]+$/, "Le nom contient des caractères invalides."),
+    .regex(/^[\p{L}\p{M}\s\-’.']+$/u, "Le nom contient des caractères invalides."),
   user_email: z
     .string()
+    .trim()
     .email("L'adresse email n'est pas valide.")
     .max(120, "L'email est trop long."),
   subject: z
     .string()
+    .trim()
     .min(3, "Le sujet doit contenir au moins 3 caractères.")
     .max(120, "Le sujet est trop long (120 max)."),
   message: z
     .string()
+    .trim()
     .min(10, "Le message doit contenir au moins 10 caractères.")
     .max(2000, "Le message est trop long (2000 max)."),
-  // Honeypot — if this field is filled, it's a bot
-  _honey: z.string().max(0, "").optional(),
+  // Honeypot is handled explicitly, so validation cannot fail silently.
+  _honey: z.string().optional(),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
 /* ── Fake terminal lines ─────────────────────────────────────────────────── */
 const TERMINAL_LINES = [
-  "$ git clone ryan-elr/portfolio",
-  "$ npm install",
-  "$ npm run dev",
-  "▶  Ready on http://localhost:3000",
-  "$ curl -X POST /api/contact \\",
-  '  -d \'{"message": "Bonjour !"}\'',
-  "✔  Message envoyé.",
+  "$ whoami",
+  "Ryan · Développeur full-stack",
+  "$ cat disponibilites.txt",
+  "Applications web · API · Cybersécurité",
+  "Parlons de votre prochain projet.",
 ];
 
 export default function ContactSection() {
-  const formRef = useRef<HTMLFormElement | null>(null);
+  const sendingRef = useRef(false);
   const cardRef = useRef<HTMLDivElement | null>(null);
   const fireworksRef = useRef<HTMLDivElement | null>(null);
   const terminalRef = useRef<HTMLDivElement | null>(null);
@@ -84,8 +86,11 @@ export default function ContactSection() {
   /* ── Submit handler ─────────────────────────────────────────────────── */
   const onSubmit = async (data: ContactFormData) => {
     // Honeypot check
-    if (data._honey) return;
-    if (status === "sending") return;
+    if (data._honey) {
+      setStatus("error");
+      return;
+    }
+    if (sendingRef.current) return;
 
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
@@ -97,13 +102,19 @@ export default function ContactSection() {
       return;
     }
 
+    sendingRef.current = true;
     setStatus("sending");
 
     try {
       await emailjs.send(serviceId, templateId, {
         user_name: data.user_name,
+        from_name: data.user_name,
+        name: data.user_name,
+        reply_to: data.user_email,
+        email: data.user_email,
         user_email: data.user_email,
         subject: data.subject,
+        title: data.subject,
         message: data.message,
       }, publicKey);
 
@@ -158,6 +169,8 @@ export default function ContactSection() {
     } catch (err) {
       console.error(err);
       setStatus("error");
+    } finally {
+      sendingRef.current = false;
     }
   };
 
@@ -233,11 +246,12 @@ export default function ContactSection() {
               className="pointer-events-none absolute inset-0 flex items-center justify-center"
             />
 
-            <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="relative space-y-4" noValidate>
+            <form onSubmit={handleSubmit(onSubmit)} className="relative space-y-4" noValidate>
               {/* Honeypot — hidden from humans, visible to bots */}
               <input
                 {...register("_honey")}
                 type="text"
+                aria-hidden="true"
                 tabIndex={-1}
                 autoComplete="off"
                 className="absolute -top-[9999px] -left-[9999px] opacity-0 h-0 w-0"
@@ -245,9 +259,12 @@ export default function ContactSection() {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-xs font-medium text-foreground/65 mb-1">Nom</label>
+                  <label htmlFor="user_name" className="block text-xs font-medium text-foreground/65 mb-1">Nom</label>
                   <input
                     {...register("user_name")}
+                    id="user_name"
+                    aria-invalid={!!errors.user_name}
+                    aria-describedby={errors.user_name ? "user_name-error" : undefined}
                     className={`w-full rounded-xl border px-3 py-2 text-sm outline-none bg-white/5 transition-colors ${errors.user_name
                       ? "border-red-400/70 focus:border-red-400 focus:ring-1 focus:ring-red-400/50"
                       : "border-white/10 focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/60"
@@ -255,13 +272,16 @@ export default function ContactSection() {
                     placeholder="Ton nom"
                   />
                   {errors.user_name && (
-                    <p className="mt-1 text-[11px] text-red-400">{errors.user_name.message}</p>
+                    <p id="user_name-error" role="alert" className="mt-1 text-[11px] text-red-400">{errors.user_name.message}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground/65 mb-1">Email</label>
+                  <label htmlFor="user_email" className="block text-xs font-medium text-foreground/65 mb-1">Email</label>
                   <input
                     {...register("user_email")}
+                    id="user_email"
+                    aria-invalid={!!errors.user_email}
+                    aria-describedby={errors.user_email ? "user_email-error" : undefined}
                     type="email"
                     className={`w-full rounded-xl border px-3 py-2 text-sm outline-none bg-white/5 transition-colors ${errors.user_email
                       ? "border-red-400/70 focus:border-red-400 focus:ring-1 focus:ring-red-400/50"
@@ -270,15 +290,18 @@ export default function ContactSection() {
                     placeholder="tu@exemple.com"
                   />
                   {errors.user_email && (
-                    <p className="mt-1 text-[11px] text-red-400">{errors.user_email.message}</p>
+                    <p id="user_email-error" role="alert" className="mt-1 text-[11px] text-red-400">{errors.user_email.message}</p>
                   )}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-foreground/65 mb-1">Sujet</label>
+                <label htmlFor="subject" className="block text-xs font-medium text-foreground/65 mb-1">Sujet</label>
                 <input
                   {...register("subject")}
+                    id="subject"
+                    aria-invalid={!!errors.subject}
+                    aria-describedby={errors.subject ? "subject-error" : undefined}
                   className={`w-full rounded-xl border px-3 py-2 text-sm outline-none bg-white/5 transition-colors ${errors.subject
                     ? "border-red-400/70 focus:border-red-400 focus:ring-1 focus:ring-red-400/50"
                     : "border-white/10 focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/60"
@@ -286,14 +309,17 @@ export default function ContactSection() {
                   placeholder="Parlons de ton projet"
                 />
                 {errors.subject && (
-                  <p className="mt-1 text-[11px] text-red-400">{errors.subject.message}</p>
+                  <p id="subject-error" role="alert" className="mt-1 text-[11px] text-red-400">{errors.subject.message}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-foreground/65 mb-1">Message</label>
+                <label htmlFor="message" className="block text-xs font-medium text-foreground/65 mb-1">Message</label>
                 <textarea
                   {...register("message")}
+                    id="message"
+                    aria-invalid={!!errors.message}
+                    aria-describedby={errors.message ? "message-error" : undefined}
                   rows={5}
                   className={`w-full rounded-xl border px-3 py-2 text-sm outline-none bg-white/5 resize-none transition-colors ${errors.message
                     ? "border-red-400/70 focus:border-red-400 focus:ring-1 focus:ring-red-400/50"
@@ -302,11 +328,11 @@ export default function ContactSection() {
                   placeholder="Donne-moi quelques détails : objectifs, délais, budget…"
                 />
                 {errors.message && (
-                  <p className="mt-1 text-[11px] text-red-400">{errors.message.message}</p>
+                  <p id="message-error" role="alert" className="mt-1 text-[11px] text-red-400">{errors.message.message}</p>
                 )}
               </div>
 
-              <div className="flex items-center justify-between pt-2">
+              <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
                 <button
                   type="submit"
                   disabled={status === "sending"}
@@ -324,11 +350,11 @@ export default function ContactSection() {
               </div>
 
               {status === "sent" && (
-                <p className="text-xs text-emerald-400 pt-1">Message bien envoyé, merci !</p>
+                <p role="status" className="text-xs text-emerald-400 pt-1">Message bien envoyé, merci !</p>
               )}
               {status === "error" && (
-                <p className="text-xs text-red-400 pt-1">
-                  Impossible d&apos;envoyer pour l&apos;instant. Vérifie la config EmailJS.
+                <p role="alert" className="text-xs text-red-400 pt-1">
+                  L’envoi a échoué. Réessaie ou écris-moi directement à ryan.elr@outlook.com.
                 </p>
               )}
             </form>

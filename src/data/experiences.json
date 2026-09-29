@@ -8,7 +8,11 @@
     "fin": "Aujourd'hui",
     "missions": [
       "Création d'applications web sur mesure",
-      "Mise en place de paiements et d'intégrations API"
+      "Mise en place de paiements et d'intégrations API",
+      "Sécurisation des API et des applications web : validation des entrées, contrôle des accès et protection des données.",
+      "Mise en place d'authentification sécurisée et de mécanismes multifacteurs (MFA).",
+      "Réalisation de tests d'intrusion pour identifier et corriger les vulnérabilités des applications.",
+      "Durcissement des serveurs et configuration des services pour réduire la surface d'attaque."
     ],
     "tech": [
       "React",
@@ -17,7 +21,12 @@
       "mongoDB",
       "Cloudinary",
       "API",
-      "PHP"
+      "PHP",
+      "Sécurité web",
+      "Cybersécurité",
+      "MFA",
+      "Tests d’intrusion",
+      "Durcissement serveur"
     ]
   },
   {

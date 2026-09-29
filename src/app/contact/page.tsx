@@ -1,3 +1,4 @@
+import ContactSection from "@/components/sections/ContactSection";
 import Header from "@/components/Header";
 import MatrixRain from "@/components/MatrixRain";
 
@@ -12,13 +13,7 @@ export default function ContactPage() {
       <Header />
 
       <main className="relative mx-auto max-w-5xl px-4 py-12 pb-20 sm:pb-12">
-        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">Contact</h1>
-        <p className="mt-4 text-foreground/80">
-          Écrivez-moi:{" "}
-          <a className="underline text-accent" href="mailto:contact@example.com">
-            ryan.elr@outlook.com
-          </a>
-        </p>
+        <ContactSection />
       </main>
     </div>
   );

@@ -14,20 +14,21 @@ export default function Header() {
   ];
 
   return (
-    <header className="w-full sticky top-0 z-40 bg-[rgba(11,11,11,0.8)] backdrop-blur sm:border-b sm:border-black/40">
-      {/* Desktop navbar */}
-      <div className="hidden sm:flex mx-auto max-w-6xl px-4 py-3 items-center justify-between">
-        <Link href="/" className="font-semibold tracking-tight text-lg text-accent">
-          Mon Portfolio
-        </Link>
-        <nav className="flex gap-6 text-sm items-center">
-          {links.map(({ href, label, icon }) => (
-            <NavItem key={href} href={href} label={label} active={pathname === href}>
-              {icon}
-            </NavItem>
-          ))}
-        </nav>
-      </div>
+    <>
+      <header className="hidden sm:block w-full sticky top-0 z-40 bg-[rgba(11,11,11,0.8)] backdrop-blur border-b border-black/40">
+        <div className="flex mx-auto max-w-6xl px-4 py-3 items-center justify-between">
+          <Link href="/" className="font-semibold tracking-tight text-lg text-accent">
+            Mon Portfolio
+          </Link>
+          <nav className="flex gap-6 text-sm items-center">
+            {links.map(({ href, label, icon }) => (
+              <NavItem key={href} href={href} label={label} active={pathname === href}>
+                {icon}
+              </NavItem>
+            ))}
+          </nav>
+        </div>
+      </header>
 
       {/* Mobile bottom app bar */}
       <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-black/40 bg-[rgba(11,11,11,0.9)] backdrop-blur pb-[max(env(safe-area-inset-bottom),0px)]">
@@ -41,7 +42,7 @@ export default function Header() {
           ))}
         </ul>
       </nav>
-    </header>
+    </>
   );
 }
 
