@@ -7,6 +7,7 @@ import { z } from "zod";
 import emailjs from "@emailjs/browser";
 import gsap from "gsap";
 
+import ContactShatter from "@/components/ContactShatter";
 import GsapReveal from "@/components/GsapReveal";
 
 /* ── Zod schema ────────────────────────────────────────────────────────── */
@@ -128,7 +129,7 @@ export default function ContactSection() {
           { scale: 1, boxShadow: "0 30px 120px rgba(0,0,0,0.85)" },
           {
             scale: 1.02,
-            boxShadow: "0 40px 140px rgba(234,179,8,0.55)",
+            boxShadow: "0 40px 140px rgba(250,37,22,0.55)",
             duration: 0.3,
             yoyo: true,
             repeat: 1,
@@ -144,7 +145,7 @@ export default function ContactSection() {
         const particles: HTMLSpanElement[] = [];
         for (let i = 0; i < 14; i++) {
           const dot = document.createElement("span");
-          dot.className = "absolute h-1.5 w-1.5 rounded-full bg-amber-400";
+          dot.className = "absolute h-1.5 w-1.5 rounded-full bg-ember-400";
           container.appendChild(dot);
           particles.push(dot);
         }
@@ -175,7 +176,8 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-96px)] flex flex-col pt-10 lg:pt-12">
+    <section className="relative min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-96px)] flex flex-col pt-10 lg:pt-12">
+      <ContactShatter />
       <GsapReveal>
         <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Contact</h2>
         <p className="mt-3 text-sm text-foreground/80 max-w-md">
@@ -212,23 +214,23 @@ export default function ContactSection() {
               href="https://github.com/RyanElr"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/4 px-4 py-3 hover:border-amber-400/50 hover:bg-amber-500/6 transition-all duration-200"
+              className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/4 px-4 py-3 hover:border-ember-400/50 hover:bg-ember-500/6 transition-all duration-200"
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white/60 group-hover:text-amber-300 transition-colors">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white/60 group-hover:text-ember-300 transition-colors">
                 <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
               </svg>
-              <span className="text-sm text-white/70 group-hover:text-amber-200 transition-colors">GitHub</span>
+              <span className="text-sm text-white/70 group-hover:text-ember-200 transition-colors">GitHub</span>
             </a>
             <a
               href="https://www.linkedin.com/in/ryanelr/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/4 px-4 py-3 hover:border-amber-400/50 hover:bg-amber-500/6 transition-all duration-200"
+              className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/4 px-4 py-3 hover:border-ember-400/50 hover:bg-ember-500/6 transition-all duration-200"
             >
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white/60 group-hover:text-amber-300 transition-colors">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white/60 group-hover:text-ember-300 transition-colors">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
               </svg>
-              <span className="text-sm text-white/70 group-hover:text-amber-200 transition-colors">LinkedIn</span>
+              <span className="text-sm text-white/70 group-hover:text-ember-200 transition-colors">LinkedIn</span>
             </a>
           </div>
         </div>
@@ -239,7 +241,7 @@ export default function ContactSection() {
             ref={cardRef}
             className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-slate-900/85 to-black/90 shadow-[0_30px_120px_rgba(0,0,0,0.85)] px-5 py-6 sm:px-7 sm:py-7"
           >
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-amber-400/25 via-transparent to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-ember-400/25 via-transparent to-transparent" />
 
             <div
               ref={fireworksRef}
@@ -267,7 +269,7 @@ export default function ContactSection() {
                     aria-describedby={errors.user_name ? "user_name-error" : undefined}
                     className={`w-full rounded-xl border px-3 py-2 text-sm outline-none bg-white/5 transition-colors ${errors.user_name
                       ? "border-red-400/70 focus:border-red-400 focus:ring-1 focus:ring-red-400/50"
-                      : "border-white/10 focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/60"
+                      : "border-white/10 focus:border-ember-400/80 focus:ring-1 focus:ring-ember-400/60"
                       }`}
                     placeholder="Ton nom"
                   />
@@ -285,7 +287,7 @@ export default function ContactSection() {
                     type="email"
                     className={`w-full rounded-xl border px-3 py-2 text-sm outline-none bg-white/5 transition-colors ${errors.user_email
                       ? "border-red-400/70 focus:border-red-400 focus:ring-1 focus:ring-red-400/50"
-                      : "border-white/10 focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/60"
+                      : "border-white/10 focus:border-ember-400/80 focus:ring-1 focus:ring-ember-400/60"
                       }`}
                     placeholder="tu@exemple.com"
                   />
@@ -304,7 +306,7 @@ export default function ContactSection() {
                     aria-describedby={errors.subject ? "subject-error" : undefined}
                   className={`w-full rounded-xl border px-3 py-2 text-sm outline-none bg-white/5 transition-colors ${errors.subject
                     ? "border-red-400/70 focus:border-red-400 focus:ring-1 focus:ring-red-400/50"
-                    : "border-white/10 focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/60"
+                    : "border-white/10 focus:border-ember-400/80 focus:ring-1 focus:ring-ember-400/60"
                     }`}
                   placeholder="Parlons de ton projet"
                 />
@@ -323,7 +325,7 @@ export default function ContactSection() {
                   rows={5}
                   className={`w-full rounded-xl border px-3 py-2 text-sm outline-none bg-white/5 resize-none transition-colors ${errors.message
                     ? "border-red-400/70 focus:border-red-400 focus:ring-1 focus:ring-red-400/50"
-                    : "border-white/10 focus:border-amber-400/80 focus:ring-1 focus:ring-amber-400/60"
+                    : "border-white/10 focus:border-ember-400/80 focus:ring-1 focus:ring-ember-400/60"
                     }`}
                   placeholder="Donne-moi quelques détails : objectifs, délais, budget…"
                 />
@@ -336,14 +338,14 @@ export default function ContactSection() {
                 <button
                   type="submit"
                   disabled={status === "sending"}
-                  className="inline-flex items-center gap-2 rounded-full bg-amber-400 px-5 py-2.5 text-sm font-semibold text-black shadow-[0_0_30px_rgba(234,179,8,0.55)] hover:bg-amber-300 hover:shadow-[0_0_40px_rgba(234,179,8,0.7)] transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-2 rounded-full accent-relief-surface px-5 py-2.5 text-sm font-semibold text-white transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {status === "sending" ? "Envoi..." : "Envoyer"}
                 </button>
 
                 <p className="text-xs text-foreground/55">
                   Ou directement :{" "}
-                  <a href="mailto:ryan.elr@outlook.com" className="underline hover:text-amber-300 transition-colors">
+                  <a href="mailto:ryan.elr@outlook.com" className="underline hover:text-ember-300 transition-colors">
                     ryan.elr@outlook.com
                   </a>
                 </p>
@@ -367,8 +369,8 @@ export default function ContactSection() {
         <div className="flex items-center justify-between text-xs text-foreground/35">
           <span>© {new Date().getFullYear()} Ryan El R. — Tous droits réservés.</span>
           <div className="flex items-center gap-4">
-            <a href="https://github.com/RyanElr" target="_blank" rel="noopener noreferrer" className="hover:text-amber-300 transition-colors">GitHub</a>
-            <a href="https://www.linkedin.com/in/ryanelr/" target="_blank" rel="noopener noreferrer" className="hover:text-amber-300 transition-colors">LinkedIn</a>
+            <a href="https://github.com/RyanElr" target="_blank" rel="noopener noreferrer" className="hover:text-ember-300 transition-colors">GitHub</a>
+            <a href="https://www.linkedin.com/in/ryanelr/" target="_blank" rel="noopener noreferrer" className="hover:text-ember-300 transition-colors">LinkedIn</a>
           </div>
         </div>
       </footer>

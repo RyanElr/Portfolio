@@ -141,6 +141,6 @@ export default function MatrixRain() {
 }
 
 function getTint(_pathname: string) {
-  // jaune moutarde #eab308
-  return "rgba(234, 179, 8, 0.9)";
+  // Rouge de la sculpture 3D
+  return "rgba(250, 37, 22, 0.9)";
 }

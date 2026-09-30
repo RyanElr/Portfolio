@@ -1,0 +1,18 @@
+/* A bevelled rail and scroll-driven Pac-Man share the sculpture's red material. */
+.experience-rail { position: absolute; top: 0; bottom: 0; left: 16px; width: 8px; perspective: 700px; pointer-events: none; z-index: 20; }
+.experience-rail-track, .experience-rail-fill { position: absolute; inset: 0; border-radius: 8px; }
+.experience-rail-track { background: linear-gradient(90deg, #370604, #9e2118 38%, #f96c554d 52%, #370604 90%); box-shadow: -2px 0 0 #130202, 2px 2px 0 #080000, inset 1px 0 1px #ff9c7659, 0 0 18px #fa251614; }
+.experience-rail-fill { transform-origin: top; transform: scaleY(0); background: linear-gradient(90deg, #8e0e08, #ff9b79 40%, #fa2516 65%, #7c0c08); box-shadow: 0 0 14px #fa25164d; }
+.experience-traveler { position: absolute; top: 0; left: 50%; width: 32px; height: 32px; margin-left: -16px; }
+.experience-pacman { position: absolute; inset: 0; filter: drop-shadow(0 3px 0 #630a05) drop-shadow(0 6px 0 #300400) drop-shadow(0 8px 10px #fa25164d); }
+.pacman-half { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 30% 22%, #ffb89a 0%, #ff5941 23%, #fa2516 50%, #9d1009 86%); }
+.pacman-left { clip-path: polygon(0 0,50% 0,50% 100%,0 100%); transform: rotate(var(--jaw, 20deg)); }
+.pacman-right { clip-path: polygon(50% 0,100% 0,100% 100%,50% 100%); transform: rotate(calc(-1 * var(--jaw, 20deg))); }
+.pacman-eye { position: absolute; top: 6px; right: 8px; width: 4px; height: 4px; border-radius: 50%; background: #210301; box-shadow: 0 -1px 0 #ffb096; }
+:global(.pacman-fragments) { position: absolute; inset: 0; }
+.pacman-fragment { position: absolute; top: 13px; left: 13px; opacity: 0; background: linear-gradient(135deg, #ffc4a4, #fa2516 42%, #770b05); filter: drop-shadow(1px 2px 0 #470600); }
+.experience-rail-end { position: absolute; bottom: 0; left: -5px; width: 18px; height: 6px; border-radius: 50%; background: #7b110a; box-shadow: inset 0 1px 1px #ff9d7b99, 0 2px 0 #290300; }
+@media (min-width: 640px) { .experience-rail { left: 24px; } }
+@media (prefers-reduced-motion: reduce) { .experience-pacman { filter: drop-shadow(0 3px 0 #630a05); } }
+
+.pacman-shockwave { position: absolute; inset: -3px; border: 2px solid #ff6955; border-radius: 50%; opacity: 0; box-shadow: 0 0 12px #fa251650; pointer-events: none; }

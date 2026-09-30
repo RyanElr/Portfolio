@@ -22,7 +22,7 @@ export default function ProjectsSection() {
   const [payload, setPayload] = useState<RevealPayload | null>(null);
 
   const handleReveal = useCallback((project: Project, originRect: DOMRect) => {
-    setPayload({ project, originRect });
+    setPayload(current => current ?? { project, originRect });
   }, []);
 
   const handleClose = useCallback(() => {
@@ -79,6 +79,10 @@ function ProjectDetailModal({
   const glitchRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const closingRef = useRef(false);
+  const shardsRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const imageRegionRef = useRef<HTMLDivElement>(null);
+  const openTimeline = useRef<gsap.core.Timeline | null>(null);
 
   // Carousel state
   const images = (project.images && project.images.length > 0)
@@ -160,41 +164,93 @@ function ProjectDetailModal({
     const content = contentRef.current;
     if (!backdrop || !panel || !glitch || !content) return;
 
-    const vpW = window.innerWidth;
-    const vpH = window.innerHeight;
-    const cx = originRect.left + originRect.width / 2;
-    const cy = originRect.top + originRect.height / 2;
-    const rx = originRect.width / 2;
-    const ry = originRect.height / 2;
-
-    const startClip = `inset(${cy - ry}px ${vpW - cx - rx}px ${vpH - cy - ry}px ${cx - rx}px round 16px)`;
-    const endClip = `inset(0px 0px 0px 0px round 0px)`;
-
-    gsap.set(content.children, { autoAlpha: 0, y: 24 });
+    const shards = shardsRef.current;
+    const card = cardRef.current;
+    if (!shards || !card) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     gsap.set(glitch, { autoAlpha: 0 });
-
+    gsap.set(content.children, { autoAlpha: 1, y: 0 });
+    gsap.set(panel, { autoAlpha: reduced ? 1 : 0 });
+    const imageRegion = imageRegionRef.current;
+    if (!imageRegion) return;
+    const target = imageRegion.getBoundingClientRect();
+    const tiles = Array.from(shards.children) as HTMLElement[];
+    const columns = 6, rows = 4;
+    tiles.forEach((tile, i) => {
+      const col = i % columns, row = Math.floor(i / columns);
+      tile.replaceChildren();
+      // Reuse the exact rendered image, object-fit, gradients and controls.
+      // Each shard is a clipped window onto the final modal, not a stretched background.
+      const replica = imageRegion.cloneNode(true) as HTMLElement;
+      replica.setAttribute("aria-hidden", "true");
+      replica.inert = true;
+      replica.style.cssText = `position:absolute;width:${target.width}px;height:${target.height}px;left:0;top:0;transform-origin:0 0;pointer-events:none;visibility:visible;opacity:1;`;
+      tile.appendChild(replica);
+      gsap.set(replica, { x: -col * originRect.width / columns, y: -row * originRect.height / rows, scaleX: originRect.width / target.width, scaleY: originRect.height / target.height });
+      gsap.set(tile, {
+        left: originRect.left + col * originRect.width / columns,
+        top: originRect.top + row * originRect.height / rows,
+        width: originRect.width / columns + 1,
+        height: originRect.height / rows + 1,
+        backgroundSize: `${originRect.width}px ${originRect.height}px`,
+        backgroundPosition: `${-col * originRect.width / columns}px ${-row * originRect.height / rows}px`,
+      });
+    });
     const tl = gsap.timeline();
-    tl.fromTo(backdrop, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 });
-    tl.fromTo(
-      panel,
-      { clipPath: startClip, autoAlpha: 1 },
-      { clipPath: endClip, duration: 0.65, ease: "expo.inOut" },
-      "<0.05"
-    );
-    tl.to(glitch, { autoAlpha: 0.6, duration: 0.06 }, "-=0.12")
-      .to(glitch, { autoAlpha: 0, duration: 0.18, ease: "power2.out" });
-    tl.to(
-      content.children,
-      { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.07, ease: "power3.out" },
-      "-=0.1"
-    );
-    return () => { tl.kill(); };
+    openTimeline.current = tl;
+    if (reduced) {
+      gsap.set(shards, { autoAlpha: 0 });
+      tl.to(backdrop, { autoAlpha: 1, duration: 0.15 });
+    } else {
+      gsap.set(backdrop, { autoAlpha: 0 });
+      tl.to(backdrop, { autoAlpha: 1, duration: 0.3 }, 0);
+      // Phase 1: the original card breaks into 24 independently rotating tiles.
+      tl.to(tiles, {
+        x: i => Math.cos(i * 2.4) * (80 + (i % 5) * 22),
+        y: i => Math.sin(i * 2.4) * (60 + (i % 4) * 20),
+        rotationX: i => (i % 2 ? 1 : -1) * 55,
+        rotationY: i => (i % 3 - 1) * 70,
+        rotationZ: i => (i % 2 ? 1 : -1) * 18,
+        scale: 0.78, duration: 0.8, ease: "power3.out",
+      }, 0);
+      // Phase 2: fragments converge at the modal's location before it is revealed.
+      tiles.forEach((tile, i) => {
+        const col = i % columns, row = Math.floor(i / columns);
+        const imageHeight = target.height;
+        tl.to(tile.firstElementChild, {
+          x: -col * target.width / columns, y: -row * target.height / rows,
+          scaleX: 1, scaleY: 1, duration: 0.95, ease: "power3.inOut",
+        }, 0.8);
+        tl.to(tile, {
+          left: target.left + col * target.width / columns,
+          top: target.top + row * imageHeight / rows,
+          width: target.width / columns + 1, height: imageHeight / rows + 1,
+          backgroundSize: `${target.width}px ${imageHeight}px`,
+          backgroundPosition: `${-col * target.width / columns}px ${-row * imageHeight / rows}px`,
+          x: 0, y: 0, rotationX: 0, rotationY: 0, rotationZ: 0, scale: 1,
+          duration: 0.95, ease: "power3.inOut",
+        }, 0.8);
+      });
+      // Let the surrounding panel settle before the image finishes assembling.
+      gsap.set(imageRegion, { autoAlpha: 0 });
+      tl.to(panel, { autoAlpha: 1, duration: 0.45 }, 1.2);
+      tl.set(imageRegion, { autoAlpha: 1 }, 1.8);
+      tl.to(shards, { autoAlpha: 0, duration: 0.2, ease: "none" }, 1.8);
+    }
+    return () => {
+      tl.kill();
+      document.body.style.overflow = previousOverflow;
+    };
   }, [originRect]);
 
   /* ── CLOSE animation ─────────────────────────────────────────────── */
   const handleClose = () => {
     if (closingRef.current) return;
     closingRef.current = true;
+    openTimeline.current?.kill();
+    gsap.set(shardsRef.current, { autoAlpha: 0 });
 
     const panel = panelRef.current;
     const backdrop = backdropRef.current;
@@ -228,7 +284,10 @@ function ProjectDetailModal({
   }, [currentIdx, goToSlide]);
 
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-label={project.titre}>
+      <div ref={shardsRef} className="pointer-events-none absolute inset-0 z-30" style={{ perspective: 1000 }}>
+        {Array.from({ length: 24 }, (_, i) => <div key={i} className="absolute overflow-hidden bg-black" style={{ backfaceVisibility: "hidden" }} />)}
+      </div>
       {/* Dim backdrop */}
       <div
         ref={backdropRef}
@@ -241,7 +300,7 @@ function ProjectDetailModal({
         ref={glitchRef}
         className="pointer-events-none absolute inset-0 z-10"
         style={{
-          background: "repeating-linear-gradient(0deg, rgba(234,179,8,0.08) 0px, rgba(234,179,8,0.08) 1px, transparent 1px, transparent 3px)",
+          background: "repeating-linear-gradient(0deg, rgba(250,37,22,0.08) 0px, rgba(250,37,22,0.08) 1px, transparent 1px, transparent 3px)",
           mixBlendMode: "screen",
         }}
       />
@@ -256,13 +315,13 @@ function ProjectDetailModal({
 
         {/* Modal card — centered, capped size */}
         <div
-          className="relative z-10 w-full max-w-5xl mx-auto"
-          onMouseLeave={handleClose}
+          ref={cardRef}
+          className="relative z-10 w-full max-w-5xl mx-auto max-h-[90dvh] overflow-y-auto"
         >
           <div className="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-slate-900/95 to-black shadow-[0_40px_140px_rgba(0,0,0,0.9)]">
 
             {/* ── Image carousel ──────────────────────────────────── */}
-            <div className="relative bg-black" style={{ aspectRatio: "16/9" }}>
+            <div ref={imageRegionRef} className="relative bg-black" style={{ aspectRatio: "16/9" }}>
 
               {/* Slides container */}
               <div ref={carouselRef} className="absolute inset-0">
@@ -289,7 +348,7 @@ function ProjectDetailModal({
                   <button
                     type="button"
                     onClick={(e) => { e.stopPropagation(); goToSlide(currentIdx - 1); }}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-black/60 border border-white/20 text-white hover:border-amber-400/80 hover:text-amber-300 transition-colors"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-black/60 border border-white/20 text-white hover:border-ember-400/80 hover:text-ember-300 transition-colors"
                     aria-label="Image précédente"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -299,7 +358,7 @@ function ProjectDetailModal({
                   <button
                     type="button"
                     onClick={(e) => { e.stopPropagation(); goToSlide(currentIdx + 1); }}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-black/60 border border-white/20 text-white hover:border-amber-400/80 hover:text-amber-300 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-black/60 border border-white/20 text-white hover:border-ember-400/80 hover:text-ember-300 transition-colors"
                     aria-label="Image suivante"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -315,7 +374,7 @@ function ProjectDetailModal({
                         type="button"
                         onClick={(e) => { e.stopPropagation(); goToSlide(i); }}
                         className={`w-2 h-2 rounded-full transition-all duration-200 ${i === currentIdx
-                          ? "bg-amber-400 scale-125"
+                          ? "bg-ember-400 scale-125"
                           : "bg-white/40 hover:bg-white/70"
                           }`}
                         aria-label={`Image ${i + 1}`}
@@ -329,7 +388,7 @@ function ProjectDetailModal({
               <button
                 type="button"
                 onClick={handleClose}
-                className="absolute top-4 right-4 z-30 flex items-center justify-center w-9 h-9 rounded-full bg-black/60 border border-white/20 text-white hover:border-amber-400/80 hover:text-amber-300 transition-colors"
+                className="absolute top-4 right-4 z-30 flex items-center justify-center w-9 h-9 rounded-full bg-black/60 border border-white/20 text-white hover:border-ember-400/80 hover:text-ember-300 transition-colors"
                 aria-label="Fermer"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
@@ -356,7 +415,7 @@ function ProjectDetailModal({
                   {project.tech.map((t) => (
                     <span
                       key={t}
-                      className="rounded-full bg-amber-500/10 border border-amber-400/40 text-amber-100 px-3 py-1"
+                      className="rounded-full bg-ember-500/10 border border-ember-400/40 text-ember-100 px-3 py-1"
                     >
                       {t}
                     </span>

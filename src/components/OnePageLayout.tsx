@@ -153,35 +153,6 @@ function SliderHeader({
 }) {
   return (
     <>
-      <header className="hidden md:block fixed top-0 left-0 right-0 z-40 bg-[rgba(11,11,11,0.8)] backdrop-blur border-b border-black/40">
-        <div className="flex mx-auto max-w-7xl px-8 py-4 items-center justify-between">
-          <span className="font-semibold tracking-tight text-lg text-orange-400">
-            Ryan.dev
-          </span>
-          <nav className="flex gap-8 text-sm items-center">
-            {SECTIONS.map(({ id, label }, idx) => {
-              const isActive = idx === activeIndex;
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => onNavigate(idx)}
-                  className={`relative inline-flex items-center gap-2 px-2 py-1 rounded-md transition-colors ${isActive
-                    ? "text-orange-300 font-medium"
-                    : "text-foreground/80 hover:text-orange-300"
-                    }`}
-                >
-                  <span>{label}</span>
-                  {isActive && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-[2px] rounded-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-500" />
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
-      </header>
-
       {/* Mobile Nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-black/40 bg-[rgba(11,11,11,0.9)] backdrop-blur pb-[max(env(safe-area-inset-bottom),0px)]">
         <ul className="mx-auto max-w-6xl px-4 py-2 grid grid-cols-4 gap-2 text-[11px]">
@@ -193,8 +164,8 @@ function SliderHeader({
                   type="button"
                   onClick={() => onNavigate(idx)}
                   className={`flex flex-col items-center justify-center gap-1 py-1 w-full rounded-md transition-colors ${isActive
-                    ? "text-orange-300 font-medium"
-                    : "text-foreground/80 hover:text-orange-300"
+                    ? "text-ember-300 font-medium"
+                    : "text-foreground/80 hover:text-ember-300"
                     }`}
                 >
                   <span className="h-6 w-6">{icon}</span>

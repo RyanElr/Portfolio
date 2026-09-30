@@ -96,7 +96,19 @@ function ProjectTile({
   return (
     <article
       ref={articleRef}
-      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-black/50 backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-1 hover:border-amber-400/30 hover:shadow-[0_20px_60px_rgba(0,0,0,0.6)] cursor-pointer"
+      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-black/50 backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-1 hover:border-ember-400/30 hover:shadow-[0_20px_60px_rgba(0,0,0,0.6)] cursor-pointer"
+      role="button"
+      tabIndex={0}
+      aria-label={`Découvrir ${project.titre}`}
+      onClick={() => { tweenRef.current?.kill(); setPercent(100); if (articleRef.current) onReveal?.(project, articleRef.current.getBoundingClientRect()); }}
+      onKeyDown={event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          tweenRef.current?.kill();
+          setPercent(100);
+          if (articleRef.current) onReveal?.(project, articleRef.current.getBoundingClientRect());
+        }
+      }}
       onMouseEnter={startLoading}
       onMouseLeave={stopLoading}
     >
@@ -124,10 +136,10 @@ function ProjectTile({
           <div className="h-1 w-full rounded-full bg-white/10 overflow-hidden">
             <div
               ref={barRef}
-              className="h-full w-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 scale-x-0 origin-left"
+              className="h-full w-full bg-gradient-to-r from-ember-400 via-ember-300 to-ember-200 scale-x-0 origin-left"
             />
           </div>
-          <div className="mt-1 text-[10px] text-amber-200/80 text-right font-mono">
+          <div className="mt-1 text-[10px] text-ember-200/80 text-right font-mono">
             {percent}%
           </div>
         </div>

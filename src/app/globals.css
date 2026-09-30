@@ -7,6 +7,12 @@
 }
 
 @theme inline {
+  --color-ember-100: #ffe3de;
+  --color-ember-200: #ffb8ad;
+  --color-ember-300: #ff8374;
+  --color-ember-400: #ff5140;
+  --color-ember-500: #fa2516;
+  --color-ember-600: #cc1b12;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
@@ -84,3 +90,48 @@ body {
 .btn-accent:hover { filter: brightness(1.1); }
 .text-accent { color: var(--accent); }
 .border-accent { border-color: var(--accent); }
+
+/* Highlights and shaded edges echo the red sculpture's bevels. */
+.accent-relief-text {
+  color: #fa2516;
+  background: linear-gradient(165deg, #ffb3a4 0%, #ff5140 24%, #fa2516 52%, #c41710 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 0 #8c100c) drop-shadow(0 3px 0 #590a08) drop-shadow(0 7px 14px #fa251629);
+}
+.accent-relief-surface {
+  background: linear-gradient(165deg, #ff6652 0%, #e62919 38%, #b51610 100%);
+  border: 1px solid #ff776266;
+  box-shadow: inset 0 1px 1px #ffc0aa99, inset 0 -2px 2px #6b090a99, 0 3px 0 #650d09, 0 9px 26px #fa251630;
+  text-shadow: 0 1px 2px #700a08;
+}
+button.accent-relief-surface:hover { filter: brightness(1.1); }
+button.accent-relief-surface:active { transform: translateY(1px); }
+.accent-relief-badge {
+  background-image: linear-gradient(160deg, #ff665220, #a8111025);
+  box-shadow: inset 0 1px 0 #ff9d7a33, inset 0 -1px 0 #650d0966, 0 2px 5px #0004;
+}
+
+.experience-perspective { perspective: 1200px; }
+.experience-tilt {
+  position: relative;
+  transform: translateY(var(--lift, 0px)) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 260ms cubic-bezier(.2,.7,.2,1);
+}
+.experience-tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  pointer-events: none;
+  opacity: var(--shine, 0);
+  background: radial-gradient(circle at var(--light-x, 50%) var(--light-y, 50%), #ffb4a514, transparent 60%);
+  box-shadow: inset 0 1px 0 #ffb9a72e, 0 18px 40px #0004;
+  transition: opacity 300ms ease;
+}
+@media (prefers-reduced-motion: reduce), (hover: none) {
+  .experience-tilt { transform: none; transition: none; }
+  .experience-tilt::after { display: none; }
+}
+
