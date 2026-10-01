@@ -7,7 +7,6 @@ import { z } from "zod";
 import emailjs from "@emailjs/browser";
 import gsap from "gsap";
 
-import ContactShatter from "@/components/ContactShatter";
 import GsapReveal from "@/components/GsapReveal";
 
 /* ── Zod schema ────────────────────────────────────────────────────────── */
@@ -54,6 +53,7 @@ export default function ContactSection() {
   const fireworksRef = useRef<HTMLDivElement | null>(null);
   const terminalRef = useRef<HTMLDivElement | null>(null);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [sendError, setSendError] = useState("");
   const [terminalText, setTerminalText] = useState("");
 
   const {
@@ -86,6 +86,7 @@ export default function ContactSection() {
 
   /* ── Submit handler ─────────────────────────────────────────────────── */
   const onSubmit = async (data: ContactFormData) => {
+    setSendError("");
     // Honeypot check
     if (data._honey) {
       setStatus("error");
@@ -98,7 +99,8 @@ export default function ContactSection() {
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
     if (!serviceId || !templateId || !publicKey) {
-      console.error("EmailJS env vars manquantes.");
+      setSendError("L’envoi est momentanément indisponible. Ton message est conservé ici.");
+      if (process.env.NODE_ENV === "development") console.warn("Configuration EmailJS manquante : service, modèle ou clé publique.");
       setStatus("error");
       return;
     }
@@ -117,11 +119,33 @@ export default function ContactSection() {
         subject: data.subject,
         title: data.subject,
         message: data.message,
-      }, publicKey);
+      }, { publicKey });
+    } catch (err: unknown) {
+      const response = typeof err === "object" && err !== null
+        ? err as { status?: unknown; text?: unknown; message?: unknown }
+        : {};
+      const code = typeof response.status === "number" ? response.status : 0;
+      const detail = typeof response.text === "string" ? response.text
+        : typeof response.message === "string" ? response.message
+        : typeof err === "string" ? err : "Erreur sans détail fourni.";
+      const description = `EmailJS (${code || "réseau"}) : ${detail}`;
+      setSendError(code === 429
+        ? "Le service reçoit trop de demandes. Patiente un instant avant de réessayer."
+        : code === 0
+        ? "Impossible de joindre le service d’envoi. Vérifie ta connexion puis réessaie."
+        : "L’envoi n’a pas abouti. Ton message est conservé ici, tu peux réessayer.");
+      if (process.env.NODE_ENV === "development") console.warn(description);
+      setStatus("error");
+      return;
+    } finally {
+      sendingRef.current = false;
+    }
 
-      setStatus("sent");
+    // Delivery succeeded; a decorative animation must not change its status.
+    setStatus("sent");
       reset();
 
+    try {
       // Success card pulse
       if (cardRef.current) {
         gsap.fromTo(
@@ -167,17 +191,13 @@ export default function ContactSection() {
           );
         });
       }
-    } catch (err) {
-      console.error(err);
-      setStatus("error");
-    } finally {
-      sendingRef.current = false;
+    } catch {
+      // Keep the confirmed delivery status if a decorative effect fails.
     }
   };
 
   return (
     <section className="relative min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-96px)] flex flex-col pt-10 lg:pt-12">
-      <ContactShatter />
       <GsapReveal>
         <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Contact</h2>
         <p className="mt-3 text-sm text-foreground/80 max-w-md">
@@ -355,9 +375,12 @@ export default function ContactSection() {
                 <p role="status" className="text-xs text-emerald-400 pt-1">Message bien envoyé, merci !</p>
               )}
               {status === "error" && (
-                <p role="alert" className="text-xs text-red-400 pt-1">
-                  L’envoi a échoué. Réessaie ou écris-moi directement à ryan.elr@outlook.com.
-                </p>
+                <div role="alert" className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-xs leading-relaxed text-foreground/70">
+                  <p>{sendError || "L’envoi n’a pas abouti. Tu peux réessayer ou me joindre par email."}</p>
+                  <a href="mailto:ryan.elr@outlook.com" className="mt-1 inline-block text-foreground underline underline-offset-4 hover:text-ember-300 transition-colors">
+                    Me contacter par email
+                  </a>
+                </div>
               )}
             </form>
           </div>
