@@ -119,8 +119,8 @@ function ProjectTile({
             src={getLogoSrc(project.image, "=w1600")}
             alt={project.titre}
             fill
-            sizes="(max-width: 640px) 100vw, 50vw"
-            className="object-contain transition-transform duration-500 ease-out group-hover:scale-105"
+            sizes="(max-width: 639px) calc(100vw - 42px), (max-width: 767px) calc((100vw - 68px) / 2), (max-width: 1215px) calc((100vw - 92px) / 2), 562px"
+            className="object-contain object-center"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-white/5 text-foreground/30 text-sm">

@@ -1,23 +1,19 @@
 export default function getLogoSrc(url?: string, variant?: string) {
   if (!url) return "";
-  const v = variant ?? "=w96-h96-n"; // par défaut: parfait pour un logo
+  const size = variant ?? "=w96-h96-n";
 
   try {
-    if (url.includes("lh3.googleusercontent.com/d/")) {
-      return variant ? url.replace(/=.+$/, v) : url; 
+    const parsed = new URL(url, "http://localhost");
+    if (parsed.hostname === "lh3.googleusercontent.com" && parsed.pathname.startsWith("/d/")) {
+      return variant ? `${parsed.origin}${parsed.pathname.replace(/=.+$/, "")}${size}` : url;
     }
 
-    // Cas 1: https://drive.google.com/file/d/ID/view
-    const m1 = url.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
-    if (m1 && m1[1]) return `https://lh3.googleusercontent.com/d/${m1[1]}${v}`;
-
-    // Cas 2: https://drive.google.com/open?id=ID ou ...?id=ID
-    const u = new URL(url, "http://localhost");
-    const id = u.searchParams.get("id");
-    if (id) return `https://lh3.googleusercontent.com/d/${id}${v}`;
-
-    // Autres (S3/Cloudinary/local) => on renvoie tel quel
-    return url;
+    // Only Drive sharing links need conversion; preserve other image hosts.
+    if (parsed.hostname !== "drive.google.com") return url;
+    const id = parsed.pathname.match(/^\/file\/d\/([a-zA-Z0-9_-]+)(?:\/|$)/)?.[1]
+      ?? parsed.searchParams.get("id");
+    if (!id || !/^[a-zA-Z0-9_-]+$/.test(id)) return url;
+    return `https://lh3.googleusercontent.com/d/${id}${size}`;
   } catch {
     return url;
   }

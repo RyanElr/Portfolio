@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import PageTransition from "@/components/PageTransition";
 import ThemeClient from "@/components/ThemeClient";
+import EasterEggCookie from "@/components/EasterEggCookie";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -17,8 +18,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-dvh flex flex-col bg-[var(--bg)] text-[var(--fg)]`}>
-        
+        <div
+          hidden
+          aria-hidden="true"
+          dangerouslySetInnerHTML={{
+            __html: "<!-- Un easter egg est présent, bonne chance ! -->",
+          }}
+        />
         <ThemeClient />
+        <EasterEggCookie />
         <main className="relative flex-1">
           <PageTransition>{children}</PageTransition>
         </main>

@@ -1,3 +1,4 @@
+import getLogoSrc from "../app/utils/fonction";
 import rawProjects from "./projects.json";
 
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
@@ -38,9 +39,9 @@ interface RawProject {
 /* ── Résolution des URLs ─────────────────────────────────────────────── */
 const projects: Project[] = (rawProjects as RawProject[]).map((p) => ({
     ...p,
-    image: isFullUrl(p.image) ? p.image : cloudinaryUrl(p.image),
+    image: isFullUrl(p.image) ? getLogoSrc(p.image, "=w1600") : cloudinaryUrl(p.image),
     images: p.images.map((img, i) => {
-        if (isFullUrl(img)) return img;
+        if (isFullUrl(img)) return getLogoSrc(img, "=w1600");
         const opts = p.imageOptions?.[i] ?? "f_auto,q_auto,w_1600";
         return cloudinaryUrl(img, opts);
     }),
