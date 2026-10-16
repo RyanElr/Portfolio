@@ -1,5 +1,41 @@
 [
   {
+    "id": "exp-0",
+    "poste": "CTO",
+    "entreprise": "SK Group",
+    "lieu": "France",
+    "debut": "2026-10",
+    "fin": "Aujourd'hui",
+    "missions": [
+      "Définition de la vision technique et de la roadmap produit, arbitrage des choix d'architecture et de stack.",
+      "Conception d'une architecture full-stack scalable (Next.js, Node.js, TypeScript) avec API REST/GraphQL et base MongoDB.",
+      "Mise en place de la chaîne CI/CD (GitHub Actions, Docker) : tests automatisés, revues de code et déploiements continus.",
+      "Encadrement de l'équipe de développement : bonnes pratiques, code review, documentation et montée en compétences.",
+      "Pilotage de la sécurité selon une approche Security by Design : modélisation des menaces et alignement sur l'OWASP Top 10.",
+      "Gestion des identités et des accès : authentification forte (MFA), JWT/OAuth2, principe du moindre privilège et RBAC.",
+      "Gestion des secrets et chiffrement des données sensibles (TLS, chiffrement au repos), conformité RGPD.",
+      "Intégration de scans de sécurité dans la CI (SAST, audit des dépendances, analyse des images Docker) et tests d'intrusion réguliers.",
+      "Supervision, journalisation et plan de réponse aux incidents ; sauvegardes et plan de reprise d'activité."
+    ],
+    "tech": [
+      "Next.js",
+      "Node.js",
+      "TypeScript",
+      "MongoDB",
+      "GraphQL",
+      "Docker",
+      "CI/CD",
+      "GitHub Actions",
+      "AWS",
+      "OAuth2 / JWT",
+      "MFA",
+      "OWASP",
+      "SAST",
+      "RGPD",
+      "Pentest"
+    ]
+  },
+  {
     "id": "exp-1",
     "poste": "Développeur Web",
     "entreprise": "Freelance",
