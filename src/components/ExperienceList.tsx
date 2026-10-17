@@ -24,22 +24,20 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
         {experiences.map((exp, index) => (
           <li key={exp.id} className="relative">
             {/* Timeline dot */}
-            <GsapReveal delay={index * 0.12} y={30}>
+            <GsapReveal delay={index * 0.12} y={30} rotateX={-22}>
               {/* Card */}
               <ExperienceTilt>
-              <div
-                className="group relative overflow-hidden rounded-2xl border border-white/8 bg-white/[0.03] backdrop-blur-sm
-                           shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_10px_40px_rgba(0,0,0,0.5)]
-                           transition-all duration-300 ease-out hover:border-ember-400/20 hover:shadow-[0_20px_60px_rgba(250,37,22,0.08)]"
-              >
-                {/* Top glow */}
-                <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-ember-400/8 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <article className="experience-card group">
+                {/* Thickness and ground shadow sit behind the face in 3D space */}
+                <div className="experience-card-shadow" aria-hidden="true" />
+                <div className="experience-card-edge" aria-hidden="true" />
+                <div className="experience-card-face" aria-hidden="true" />
 
-                <div className="relative p-5 sm:p-6">
+                <div className="experience-card-content p-5 sm:p-6">
                   {/* Header row */}
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="experience-depth-high flex items-start justify-between gap-3">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
                         <span className="inline-flex items-center gap-1.5 rounded-full accent-relief-badge bg-ember-400/10 border border-ember-400/25 px-2.5 py-0.5 text-[10px] font-medium text-ember-300 tracking-wide uppercase">
                           {exp.entreprise}
                         </span>
@@ -54,7 +52,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
                   </div>
 
                   {/* Missions */}
-                  <ul className="mt-4 space-y-2">
+                  <ul className="experience-depth-low mt-4 space-y-2">
                     {exp.missions.map((m, i) => (
                       <li key={i} className="flex items-start gap-2.5 text-sm text-foreground/75 leading-relaxed">
                         <span className="mt-1.5 h-1 w-1 rounded-full bg-ember-400/60 flex-shrink-0" />
@@ -64,7 +62,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
                   </ul>
 
                   {/* Tech stack */}
-                  <div className="mt-4 flex flex-wrap gap-1.5">
+                  <div className="experience-depth-mid mt-4 flex flex-wrap gap-1.5">
                     {exp.tech.map((t) => (
                       <span
                         key={t}
@@ -76,7 +74,7 @@ export default function ExperienceList({ experiences }: { experiences: Experienc
                     ))}
                   </div>
                 </div>
-              </div>
+              </article>
               </ExperienceTilt>
             </GsapReveal>
           </li>
