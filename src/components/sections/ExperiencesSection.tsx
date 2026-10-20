@@ -1,4 +1,4 @@
-import ExperienceList from "@/components/ExperienceList";
+import ExperienceShowcase from "@/components/ExperienceShowcase";
 import experiences from "@/data/experiences.json";
 import GsapReveal from "@/components/GsapReveal";
 
@@ -18,7 +18,7 @@ export default function ExperiencesSection() {
       </GsapReveal>
 
       <div className="flex-1">
-        <ExperienceList experiences={experiences} />
+        <ExperienceShowcase experiences={experiences} />
       </div>
     </section>
   );
