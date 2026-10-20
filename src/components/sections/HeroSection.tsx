@@ -21,7 +21,7 @@ export default function HeroSection() {
         <HeroSpecialties />
       </GsapReveal>
 
-      <p className="absolute bottom-20 md:bottom-10 left-0 text-xs uppercase tracking-[0.22em] text-white/50">Défile pour explorer <span className="ml-3 text-ember-400">↓</span></p>
+      <p className="absolute bottom-20 md:bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs uppercase tracking-[0.22em] text-white/50">Défile pour explorer <span className="ml-3 text-ember-400">↓</span></p>
     </section>
   );
 }

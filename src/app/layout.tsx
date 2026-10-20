@@ -5,6 +5,7 @@ import "./globals.css";
 import PageTransition from "@/components/PageTransition";
 import ThemeClient from "@/components/ThemeClient";
 import EasterEggCookie from "@/components/EasterEggCookie";
+import CookieConsent from "@/components/CookieConsent";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <main className="relative flex-1">
           <PageTransition>{children}</PageTransition>
         </main>
+        <CookieConsent />
       </body>
     </html>
   );

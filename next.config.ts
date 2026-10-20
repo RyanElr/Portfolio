@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Bottom corners hold the cookie and sound buttons.
+  devIndicators: { position: "top-left" },
   images: {
     remotePatterns: [
       {
